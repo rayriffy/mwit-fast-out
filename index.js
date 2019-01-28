@@ -3,7 +3,7 @@ const dotenv = require('dotenv');
 
 dotenv.config();
 
-const { USER = "USERNAME", PASS = "PASSWORD", BACK_HOME_MESSAGE="กลับบ้าน" } = process.env;
+const { USER = "USERNAME", PASS = "PASSWORD", OUT_SCHOOL_MESSAGE="กินข้าว" } = process.env;
 
 (async function () {
   const browser = await puppeteer.launch({
@@ -27,22 +27,28 @@ const { USER = "USERNAME", PASS = "PASSWORD", BACK_HOME_MESSAGE="กลับบ
 
   await page.waitForSelector('#cerceve > div.formbody > form > input:nth-child(1)');
   await page.click('#cerceve > div.formbody > form > input.submit', {visible: true});
-
+  
   // Request
 
-  await page.goto('http://10.40.50.50:8080/MahidolGateSystem/frmSTDRequestHome.jsp?groupindx=2');
+  await page.goto('http://10.40.50.50:8080/MahidolGateSystem/frmSTDRequest.jsp?groupindx=2');
 
-  await page.waitForSelector('table > tbody > tr > td > #txtSubject')
-  await page.click('table > tbody > tr > td > #txtSubject')
+  await page.waitForSelector('#flex1 > tbody > tr > td > #comTypeID');
+  await page.click('#flex1 > tbody > tr > td > #comTypeID');
 
-  await page.waitForSelector('table > tbody > tr > td > #dateEnd')
-  await page.click('table > tbody > tr > td > #dateEnd')
+  await page.select('#flex1 > tbody > tr > td > #comTypeID', '1013');
 
-  await page.waitForSelector('table > tbody > tr > td > #dateEnd')
-  await page.click('table > tbody > tr > td > #dateEnd')
+  await page.waitForSelector('#flex1 > tbody > tr > td > #txtSubject');
+  await page.click('#flex1 > tbody > tr > td > #txtSubject');
 
-  await page.waitForSelector('table > tbody > tr > td > #btnSave')
-  await page.click('table > tbody > tr > td > #btnSave')
+  await page.type('#flex1 > tbody > tr > td > #txtSubject', OUT_SCHOOL_MESSAGE);
+
+  await page.waitForSelector('#flex1 > tbody > tr > td > #comStartTimeHr');
+  await page.click('#flex1 > tbody > tr > td > #comStartTimeHr');
+
+  await page.select('#flex1 > tbody > tr > td > #comStartTimeHr', '15');
+
+  await page.waitForSelector('#flex1 > tbody > tr:nth-child(5) > td:nth-child(1) > input.btn.btn-sm.btn-info');
+  await page.click('#flex1 > tbody > tr:nth-child(5) > td:nth-child(1) > input.btn.btn-sm.btn-info');
 
   await navigationPromise;
 
